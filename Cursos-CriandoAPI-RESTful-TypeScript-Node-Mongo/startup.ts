@@ -1,41 +1,40 @@
-import express, { Router, Request, Response } from 'express';
-import Db from './infra/db';
-import NewsControllers from './controllers/newsControllers';
+import express, { Request, Response } from 'express';
+import Database from "./infra/db";
+import NewsController from './controllers/newsController';
 import * as bodyParser from 'body-parser';
 
-class Startup {
+class StartUp {
+
     public app: express.Application;
-
-    private router: Router;
-    private _db: Db;
-
+    private _db: Database;
+    private bodyParser?: any;
 
     constructor() {
         this.app = express();
-        this._db = new Db();
+        this._db = new Database();
         this._db.createConnection();
-        this.router = Router();
-        this.middleware();
+        this.middler();
         this.routes();
-        this.app.use(this.router);
     }
 
-    middleware() {
+    middler() {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
     }
 
-    public routes(): void {
-        this.router.get('/', (req: Request, res: Response) => {
-            console.log("asd");
-            res.send({ versao: '0.0.1' });
+    routes() {
+        this.app.route("/").get((req: Request, res: Response) => {
+            res.send({ versao: "0.0.1" });
         });
 
-        this.router.get('/api/v1/news', NewsControllers.get);
-        this.router.get('/api/v1/news/:id', NewsControllers.getById);
-        this.router.post('/api/v1/news', NewsControllers.create);
-        this.router.put('/api/v1/news/:id', NewsControllers.update);
-        this.router.delete('/api/v1/news/:id', NewsControllers.delete);
+        //new
+        this.app.route("/api/v1/news").get(NewsController.get);
+        this.app.route("/api/v1/news/:id").get(NewsController.getById);
+        this.app.route("/api/v1/news").post(NewsController.create);
+        this.app.route("/api/v1/news/:id").put(NewsController.update);
+        this.app.route("/api/v1/news/:id").delete(NewsController.delete);
+
     }
 }
-export default new Startup();
+
+export default new StartUp();

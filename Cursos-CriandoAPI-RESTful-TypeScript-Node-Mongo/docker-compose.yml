@@ -7,7 +7,7 @@ services:
     image: mongo    
     restart: always
     ports:
-      - 27017:27017/tcp
+      - 27017:27017
     networks:
     - cursos-criandoapi-restful-typescript-node-mongo
     environment:
@@ -18,7 +18,7 @@ services:
     image: mongo-express    
     restart: always
     ports:
-      - 8081:8081/tcp
+      - 8081:8081
     networks:
       - cursos-criandoapi-restful-typescript-node-mongo
     environment:

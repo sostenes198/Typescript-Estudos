@@ -1,27 +1,29 @@
-import newsRepository from "../repository/newsRepository";
 import NewsRepository from "../repository/newsRepository";
 
 class NewsService {
-
-    public get() {
+    get() {
         return NewsRepository.find({});
-        const x: number = 10;
     }
 
-    public getById(id: any) {
-        return NewsRepository.find({ id });
+    getById(_id: any) {
+        return NewsRepository.findById(_id.trim()/*, function (err: any, task: any) {
+            if (err) {
+                return null;
+            }
+            return task;
+        }*/);
     }
 
-    public create(news: any) {
+    create(news: any) {
         return NewsRepository.create(news);
     }
 
-    public update(id: any, news: any) {
-        return NewsRepository.findByIdAndUpdate(id, news);
+    update(_id: any, news: any) {
+        return NewsRepository.findByIdAndUpdate(_id, news);
     }
 
-    public delete(id: any) {
-        return NewsRepository.findByIdAndRemove(id);
+    delete(_id: any) {
+        return NewsRepository.findByIdAndRemove(_id);
     }
 }
 
