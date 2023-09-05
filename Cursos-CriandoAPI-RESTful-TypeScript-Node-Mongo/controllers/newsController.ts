@@ -1,66 +1,112 @@
 import NewsService from "../services/newsService";
 import * as HttpStatus from "http-status";
+import { createClient } from 'redis';
 
 import Helper from "../infra/helper";
+import ExportFiles from "../infra/exportFiles";
+import helper from "../infra/helper";
 
 class NewsController {
-  get(req: any, res: any) {
-    NewsService.get()
-      .then(news => Helper.sendResponse(res, HttpStatus.OK, news))
-      .catch(error => Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error));
-  }
-
-  getById(req: any, res: any) {
-    const _id = req.params.id;
-
-    console.log(`Awe ${_id}`);
-
-    NewsService.getById(_id)
-      .then(news => {
-        Helper.sendResponse(res, HttpStatus.OK, news);
-      })
-      .catch(error => {
-        Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error);
+  async get(req: any, res: any) {
+    try {
+      let redisClient = createClient({
+        password: "Password",
+        socket: {
+          port: 6379,
+          host: process.env.RUN_IN_DOCKER ? 'redis' : 'localhost'
+        }
       });
+
+      await redisClient.connect();
+
+      let redisResult = await redisClient.get('news');
+
+      if (redisResult) {
+        Helper.sendResponse(res, HttpStatus.OK, JSON.parse(redisResult));
+        return;
+      }
+
+      let result = await NewsService.get();
+      await redisClient.set('news', JSON.stringify(result));
+      await redisClient.expire('news', 60);
+      Helper.sendResponse(res, HttpStatus.OK, result);
+    }
+    catch (error: any) {
+      Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error.message);
+    }
   }
 
-  create(req: any, res: any) {
-    let vm = req.body;
+  async getById(req: any, res: any) {
+    try {
+      const _id = req.params.id;
 
-    NewsService.create(vm)
-      .then(news =>
-        Helper.sendResponse(
-          res,
-          HttpStatus.OK,
-          "Noticia cadastrada com sucesso!"
-        )
-      )
-      .catch(error => Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error));
+      console.log(`Awe ${_id}`);
+
+      let result = await NewsService.getById(_id);
+      Helper.sendResponse(res, HttpStatus.OK, result);
+
+    }
+    catch (error) {
+      Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error);
+    }
+
   }
 
-  update(req: any, res: any) {
-    const _id = req.params.id;
-    let news = req.body;
+  async exportToCsv(req: any, res: any) {
+    try {
+      let response = await NewsService.get();
+      let filename = await ExportFiles.tocsv(response);
+      helper.sendResponse(res, HttpStatus.OK, req.get('host') + "/exports/" + filename);
+    }
+    catch (error) {
 
-    NewsService.update(_id, news)
-      .then(news =>
-        Helper.sendResponse(
-          res,
-          HttpStatus.OK,
-          "Notícia foi atualiza com sucesso!"
-        )
-      )
-      .catch(error => Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error));
+    }
   }
 
-  delete(req: any, res: any) {
-    const _id = req.params.id;
+  async create(req: any, res: any) {
+    try {
+      let vm = req.body;
 
-    NewsService.delete(_id)
-      .then(() =>
-        Helper.sendResponse(res, HttpStatus.OK, "Noticia deletada com sucesso!")
-      )
-      .catch(error => Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error));
+      let result = await NewsService.create(vm);
+      Helper.sendResponse(
+        result,
+        HttpStatus.OK,
+        "Noticia cadastrada com sucesso!"
+      );
+    }
+    catch (error) {
+      Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error);
+    }
+  }
+
+  async update(req: any, res: any) {
+    try {
+      const _id = req.params.id;
+      let news = req.body;
+
+      let result = await NewsService.update(_id, news);
+      Helper.sendResponse(
+        result,
+        HttpStatus.OK,
+        "Notícia foi atualiza com sucesso!"
+      );
+
+    }
+    catch (error) {
+      Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error);
+    }
+  }
+
+  async delete(req: any, res: any) {
+    try {
+      const _id = req.params.id;
+
+      let result = await NewsService.delete(_id);
+      Helper.sendResponse(result, HttpStatus.OK, "Noticia deletada com sucesso!");
+    }
+    catch (error) {
+      Helper.sendResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, error);
+    }
   }
 }
 

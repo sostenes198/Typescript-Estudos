@@ -1,11 +1,11 @@
 import NewsRepository from "../repository/newsRepository";
 
 class NewsService {
-    get() {
+    async get() {
         return NewsRepository.find({});
     }
 
-    getById(_id: any) {
+    async getById(_id: any) {
         return NewsRepository.findById(_id.trim()/*, function (err: any, task: any) {
             if (err) {
                 return null;
@@ -14,15 +14,15 @@ class NewsService {
         }*/);
     }
 
-    create(news: any) {
+    async create(news: any) {
         return NewsRepository.create(news);
     }
 
-    update(_id: any, news: any) {
+    async update(_id: any, news: any) {
         return NewsRepository.findByIdAndUpdate(_id, news);
     }
 
-    delete(_id: any) {
+    async delete(_id: any) {
         return NewsRepository.findByIdAndRemove(_id);
     }
 }

@@ -33,6 +33,7 @@
 
 ## Configurações para Debug de aplicações
 
+1. Configurar debug no vscode, conforme exemplo abaixo:
 ```json
 {
     // Use IntelliSense to learn about possible attributes.
@@ -57,6 +58,7 @@
                 "${workspaceFolder}/**/*.js"
             ]
         },
+        // Maneira mais recomendada, utilizando ts-node-dev
         {
             "port": 9229,
             "name": "Attach by ProcessId",
@@ -69,6 +71,25 @@
     ]
 }
 ```
+
+2. Configurar auto atach para `always`:
+![Debug Alto Attach](/images/debug_auto_attach.png)
+
+3. Instalar dependência de desenvolvimento:
+   
+   `npm install ts-node --save-dev`
+
+   `npm install ts-node-dev --save-dev`
+
+4. Realizar configuração para executação do script em debug com hot-reload:
+
+    ```json
+    {
+        "scripts": {
+            "start-dev": "ts-node-dev --respawn --transpile-only --inspect=9229 --project tsconfig.json {{ENTRY_POINT_FILE}}",
+        }
+    }
+    ```
 
 
 ## Links Úteis:

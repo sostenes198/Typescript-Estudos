@@ -1,26 +1,16 @@
-# Configuração para Debug da aplicação:
-{
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Cursos-CriandoAPI-RESTful-TypeScript-Node-Mongo",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\Cursos-CriandoAPI-RESTful-TypeScript-Node-Mongo\\program.ts",
-            "runtimeArgs": [
-                "-r", "ts-node/register",
-                "-r", "tsconfig-paths/register"
-            ],
-            "console": "integratedTerminal",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
-        }
-    ]
-}
+## Comando para gerar build da imagem docker:
+
+`docker build -t estudos-soso/api-node-ts:1.0.0 .`
+
+## Comando para criar e rodar container docker:
+
+`docker run -d -p 5000:3099 estudos-soso/api-node-ts:lates`
+
+## Comando para verificar containers:
+
+`docker ps` Listar containers em execução
+`docker ps -a` Lista todos containers
+
+## Docker-Compose
+
+`docker-compose up --force-recreate --build --wait -d`
