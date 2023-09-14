@@ -13,7 +13,7 @@ type SomeConstructor = {
     new(s: string): SomeObject;
 };
 
-function fn(ctor: SomeConstructor) {
+function fn(ctor: SomeConstructor): SomeObject {
     return new ctor("hello");
 }
 

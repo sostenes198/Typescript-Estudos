@@ -5,10 +5,10 @@
 * npm list -g (Listar os pacotes globais intalados)
 
 * npm list (Listar os pacotes instalados do projeto)
- npm install -g typescript. (Instalar globalmente o typescript)
+ 
+* npm install -g typescript. (Instalar globalmente o typescript)
 
 * npm install typescript --save-dev (Instalar somente no projeto como uma dependência de desenvolvimento)
-  
 
 * npx tsc --init (Inicializa o arquivo `tsconfig.json`)
 
@@ -20,7 +20,7 @@
   
 * npm install {PACKAGE} Salva como dependência do projeto
   
-* npp install --save-dev {PACKAGE} Salvar como dependência de desenvolvimento do projeto
+* npm install --save-dev {PACKAGE} Salvar como dependência de desenvolvimento do projeto
 
 
 
