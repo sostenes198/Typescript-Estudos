@@ -1,3 +1,3 @@
 export interface StartUpRunner {
-    Run(): void;
+    Run(): Promise<void>;
 }

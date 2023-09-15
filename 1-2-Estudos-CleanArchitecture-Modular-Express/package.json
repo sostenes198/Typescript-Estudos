@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc --build --clean",
+    "build:clean": "if exist dist (rmdir /Q /S dist)",
     "build:watch": "npx tsc --watch",
     "buid:diagnostics": "npx tsc --watch -diagnostics",
     "start": "node ./dist/program.js",

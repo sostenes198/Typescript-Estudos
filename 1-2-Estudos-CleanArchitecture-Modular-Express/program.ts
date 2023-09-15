@@ -1,3 +1,9 @@
-import StartUp from '@/1-Api/Startup/Startup';
+export {};
+import StartUp from './src/1-Api/Startup/Startup';
 
-StartUp.Build().Run();
+const program = async () => {
+    const build = await StartUp.Build();
+    await build.Run();
+};
+
+program();
