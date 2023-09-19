@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { Controller, HttpDelete, HttpGet, HttpPost, HttpPut } from '../AOP/Controller/ControllerDecorator';
+import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '../aop/controller/ControllerDecorator';
 import { injectable } from 'inversify';
 
 @injectable()
-@Controller('test')
+@HttpController('test')
 export class TestController {
     public constructor() {}
 

@@ -7,8 +7,11 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@/*":[
+      "@/*": [
         "./src/*"
+      ],
+      "@test/*": [
+        "./test/*"
       ]
     },
     "experimentalDecorators": true,
@@ -17,7 +20,8 @@
     "moduleResolution": "Node",
     "types": [
       "reflect-metadata",
-      "node"
+      "node",
+      "jest"
     ],
     "resolveJsonModule": true,
     "declaration": true,
@@ -45,10 +49,12 @@
   "include": [
     "src/**/*",
     "test/**/*",
-    "jest.config.ts"
-, "Program.ts"  ],
+    "jest.config.ts",
+    "Program.ts"
+  ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "coverage"
   ]
 }

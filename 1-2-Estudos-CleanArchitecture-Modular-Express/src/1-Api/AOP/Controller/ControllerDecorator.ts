@@ -1,15 +1,14 @@
 import 'reflect-metadata';
-import { HttpMethod } from '../../Http/Enum/HttpMethod';
+import { HttpMethod } from '@/1-api/http/enum/HttpMethod';
+import { MetadataControllerKey } from './enum/MetadataControllerKey';
+import { v4 as uuidV4 } from 'uuid';
 
-export enum MetadataControllerKey {
-    CONTROLLER_PATH = 'controller.path',
-    CONTROLLER_METHOD = 'controller.method',
-    CONTROLLER_METHOD_PATH = 'controller.method.path',
-}
+export function HttpController(path: string) {
+    if (!path) throw new Error(`path is required`);
 
-export function Controller(path: string) {
     path = _setDefaultBar(path);
     return function (constructor: new (...param: any[]) => object) {
+        Reflect.defineMetadata(MetadataControllerKey.CONTROLLER_ID, uuidV4(), constructor);
         Reflect.defineMetadata(MetadataControllerKey.CONTROLLER_PATH, path, constructor);
     };
 }

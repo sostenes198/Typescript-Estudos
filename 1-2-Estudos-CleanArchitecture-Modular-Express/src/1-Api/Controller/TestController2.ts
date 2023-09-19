@@ -1,33 +1,33 @@
 import { Request, Response } from 'express';
-import { Controller, HttpDelete, HttpGet, HttpPost, HttpPut } from '../AOP/Controller/ControllerDecorator';
+import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '../aop/controller/ControllerDecorator';
 import { injectable } from 'inversify';
 
 @injectable()
-@Controller('test2')
-export class TestController2 {
+@HttpController('test2')
+export class TestController {
     public constructor() {}
 
-    @HttpGet('get')
+    @HttpGet('')
     async get(req: Request, res: Response): Promise<void> {
         console.log(req);
         console.log(res);
-        res.send('ARROCHA');
+        res.send('ARROCHA2');
     }
 
-    @HttpPost('post')
+    @HttpPost('')
     async post(req: Request, res: Response): Promise<void> {
         console.log(req);
         console.log(res);
     }
 
-    @HttpPut('put')
+    @HttpPut('')
     async put(req: Request, res: Response): Promise<void> {
         req.method;
         console.log(req);
         console.log(res);
     }
 
-    @HttpDelete('delete')
+    @HttpDelete('')
     async delete(req: Request, res: Response): Promise<void> {
         console.log(req);
         console.log(res);

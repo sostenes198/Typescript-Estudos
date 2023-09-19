@@ -1,5 +1,5 @@
 export {};
-import StartUp from './src/1-Api/Startup/Startup';
+import StartUp from './src/1-api/startup/Startup';
 
 const program = async () => {
     const build = await StartUp.Build();
