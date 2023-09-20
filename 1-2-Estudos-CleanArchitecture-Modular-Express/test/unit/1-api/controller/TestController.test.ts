@@ -1,6 +1,5 @@
 import { TestController } from '@/1-api/controller/TestController';
-import { Response } from 'express';
-import { Request } from 'express-serve-static-core';
+import { Request, Response } from 'express';
 
 describe('TestController', () => {
     let testController: TestController;
