@@ -2,7 +2,7 @@ import { Application, NextFunction, Request, Response } from 'express';
 import { MetadataControllerKey } from '../aop/controller/enum/MetadataControllerKey';
 import { HttpMethod } from '../http/enum/HttpMethod';
 import { AppContainer } from '../../4-crossCuting/1-ioc/AppContainer';
-import { ExpressRouteFunc } from './type/ExpressRouteFunc';
+import { ExpressRouterFunc } from './type/ExpressRouterFunc';
 import { Container } from 'inversify';
 
 export class ExpressControllerConfig {
@@ -44,22 +44,22 @@ export class ExpressControllerConfig {
         return [true, methodRequestPath, method];
     }
 
-    private static GetExpressMethod(app: Application, method: string): (router: string, handler: ExpressRouteFunc) => void {
+    private static GetExpressMethod(app: Application, method: string): (router: string, handler: ExpressRouterFunc) => void {
         switch (method) {
             case HttpMethod.GET:
-                return (router: string, handler: ExpressRouteFunc) => app.get(router, handler);
+                return (router: string, handler: ExpressRouterFunc) => app.get(router, handler);
             case HttpMethod.POST:
-                return (router: string, handler: ExpressRouteFunc) => app.post(router, handler);
+                return (router: string, handler: ExpressRouterFunc) => app.post(router, handler);
             case HttpMethod.PUT:
-                return (router: string, handler: ExpressRouteFunc) => app.put(router, handler);
+                return (router: string, handler: ExpressRouterFunc) => app.put(router, handler);
             case HttpMethod.DELETE:
-                return (router: string, handler: ExpressRouteFunc) => app.delete(router, handler);
+                return (router: string, handler: ExpressRouterFunc) => app.delete(router, handler);
             default:
                 throw new Error(`Method ${method} not found.`);
         }
     }
 
-    private static ExpressDefaultRequest<T>(target: new (...param: any[]) => T, targetId: string, methodTarget: string): ExpressRouteFunc {
+    private static ExpressDefaultRequest<T>(target: new (...param: any[]) => T, targetId: string, methodTarget: string): ExpressRouterFunc {
         return async function (req: Request, res: Response, next?: NextFunction) {
             using scope = AppContainer.CreateScope();
             const controller: any = scope.Container.get<T>(targetId);

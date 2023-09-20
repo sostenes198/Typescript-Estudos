@@ -32,10 +32,19 @@ const httpMethodScenarios: Array<HttpMethodScenarioType> = [
 describe('ControllerDecorator', () => {
     describe('HttpController', () => {
         test.each([
-            {urlPath: 'unittest',urlPathExpected: '/unittest'},
-            {urlPath: '/',urlPathExpected: '/'},
-            {urlPath: '/unittest',urlPathExpected: '/unittest'},
-        ])('Should create decorator $urlPathExpected', ({urlPath, urlPathExpected}) => {
+            {
+                urlPath: 'unittest',
+                urlPathExpected: '/unittest',
+            },
+            {
+                urlPath: '/',
+                urlPathExpected: '/',
+            },
+            {
+                urlPath: '/unittest',
+                urlPathExpected: '/unittest',
+            },
+        ])('Should create decorator $urlPathExpected', ({ urlPath, urlPathExpected }) => {
             // arrange
 
             // act
@@ -57,12 +66,24 @@ describe('ControllerDecorator', () => {
         });
     });
 
-    describe.each(httpMethodScenarios)('Should create HttpMethod $method', (scenario: HttpMethodScenarioType) => {
+    describe.each(httpMethodScenarios)('HttpMethod $method', (scenario: HttpMethodScenarioType) => {
         test.each([
-            { urlPath: '', urlPathExpected: '/' },
-            { urlPath: '/', urlPathExpected: '/' },
-            { urlPath: `${scenario.method}`, urlPathExpected: `/${scenario.method}` },
-            { urlPath: `/${scenario.method}`, urlPathExpected: `/${scenario.method}` },
+            {
+                urlPath: '',
+                urlPathExpected: '/',
+            },
+            {
+                urlPath: '/',
+                urlPathExpected: '/',
+            },
+            {
+                urlPath: `${scenario.method}`,
+                urlPathExpected: `/${scenario.method}`,
+            },
+            {
+                urlPath: `/${scenario.method}`,
+                urlPathExpected: `/${scenario.method}`,
+            },
         ])('Should create decorator $urlPathExpected', ({ urlPath, urlPathExpected }) => {
             // arrange
 
