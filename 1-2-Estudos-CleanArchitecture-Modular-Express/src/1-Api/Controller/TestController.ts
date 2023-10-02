@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '../aop/controller/ControllerDecorator';
-import { injectable } from 'inversify';
+import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '@/1-Api/AOP/Controller/ControllerDecorator';
+import { Inject } from '@/4-CrossCuting/1-IoC/Base/Annotations/Inject';
 
-@injectable()
+@Inject()
 @HttpController('test')
 export class TestController {
     public constructor() {}

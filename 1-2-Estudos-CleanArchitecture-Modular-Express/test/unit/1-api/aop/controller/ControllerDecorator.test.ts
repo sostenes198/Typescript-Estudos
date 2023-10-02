@@ -1,6 +1,6 @@
-import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '@/1-api/aop/controller/ControllerDecorator';
-import { MetadataControllerKey } from '@/1-api/aop/controller/enum/MetadataControllerKey';
-import { HttpMethod } from '@/1-api/http/enum/HttpMethod';
+import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '@/1-Api/AOP/Controller/ControllerDecorator';
+import { MetadataControllerKey } from '@/1-Api/AOP/Controller/Enum/MetadataControllerKey';
+import { HttpMethod } from '@/1-Api/Http/Enum/HttpMethod';
 
 @HttpController('unittest')
 class ControllerDecoratorTest {}

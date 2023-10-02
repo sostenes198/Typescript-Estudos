@@ -4,23 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc --build --clean",
-    "build:clean": "if exist dist (rmdir /Q /S dist)",
-    "build:watch": "npx tsc --watch",
-    "buid:diagnostics": "npx tsc --watch -diagnostics",
+    "clean": "if [ -d dist ]; then rm -rf dist;rm -rf coverage; fi;",
+    "build": "npm run clean && npx tsc --project tsconfig.json",
+    "build:watch": "npm run build -- --watch",
+    "build:diagnostic": "npm run build -- --diagnostics",
+    "build:diagnostic:watch": "npm run build:watch -- --diagnostics",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/program.js",
     "start:dev": "ts-node-dev --respawn --transpile-only --inspect=9229 --project tsconfig.json -r tsconfig-paths/register Program.ts",
-    "test:unit": "jest ./test/unit",
-    "test:unit:cov": "jest --coverage ./test/unit"
+    "test": "npm run build && jest",
+    "test:unit": "npm run test -- --config ./test/unit/jest.config.ts --projects ./test/unit",
+    "test:unit:coverage": "npm run test:unit -- --coverage"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "@types/jest": "^29.5.5",
     "@types/uuid": "^9.0.4",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
-    "@types/express": "^4.17.17",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
@@ -34,8 +36,8 @@
     "express": "^4.18.2",
     "inversify": "^6.0.1",
     "reflect-metadata": "^0.1.13",
-    "uuid": "^9.0.1",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "uuid": "^9.0.1"
   }
 }

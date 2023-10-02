@@ -1,5 +1,6 @@
 export class EnumAssert {
-    private constructor() {}
+    private constructor() {
+    }
 
     public static Assert(enumToValidate: object, enumKeysExpected: Array<string>, enumValuesExpected: Array<string>) {
         const keys = Object.keys(enumToValidate);

@@ -1,19 +1,31 @@
 import express, { Application } from 'express';
-import { StartUpBuilder } from './interfaces/StartUpBuilder';
-import { StartUpRunner } from './interfaces/StartUpRunner';
-import { ExpressRouterConfig } from '../express/ExpressRouterConfig';
-import { BootstrapperApplication } from '../../4-crossCuting/1-ioc/BootstrapperApplication';
-class StartUp implements StartUpBuilder, StartUpRunner {
-    private static readonly PORT: number = 3099;
-    private readonly _app: Application;
+import { ExpressRouterConfigImp } from '@/1-Api/Express/ExpressRouterConfigImp';
+import { BootstrapperApplication } from '@/4-CrossCuting/1-IoC/BootstrapperApplication';
+import { ConfigureAction } from '@/4-CrossCuting/1-IoC/Base/Types/ConfigureAction';
+import { ExpressControllerConfigImp } from '@/1-Api/Express/ExpressControllerConfigImp';
 
-    public constructor() {
-        this._app = express();
+class StartUp implements StartUp {
+    private static readonly PORT: number = 3099;
+    private _app!: Application;
+    private _expressRouterConfig!: ExpressRouterConfigImp;
+
+    private constructor() {}
+
+    public static async Create(configurationActions?: ConfigureAction): Promise<StartUp> {
+        const serviceProvider = BootstrapperApplication.InitializeApplication(configurationActions);
+        const app = express();
+        const expressControllerConfig = new ExpressControllerConfigImp(app, serviceProvider);
+        const expressRouterConfig = new ExpressRouterConfigImp(expressControllerConfig);
+
+        const startup = new StartUp();
+        startup._app = app;
+        startup._expressRouterConfig = expressRouterConfig;
+
+        return await startup.Build();
     }
 
-    public async Build(): Promise<StartUpRunner> {
-        BootstrapperApplication.InitializeApplication();
-        await ExpressRouterConfig.ConfigureControllers(this._app);
+    private async Build(): Promise<StartUp> {
+        await this._expressRouterConfig.ConfigureControllers();
         return this;
     }
 
@@ -24,4 +36,4 @@ class StartUp implements StartUpBuilder, StartUpRunner {
     }
 }
 
-export default new StartUp();
+export { StartUp };

@@ -1,5 +1,5 @@
-import { MetadataControllerKey } from '@/1-api/aop/controller/enum/MetadataControllerKey';
-import { EnumAssert } from '@test/base/jest/EnumAssert';
+import { MetadataControllerKey } from '@/1-Api/AOP/Controller/Enum/MetadataControllerKey';
+import { EnumAssert } from "@test/base/Jest/EnumAssert";
 
 describe('MetadataControllerKey', () => {
     test('Should validate enums MetadataControllerKey', () => {

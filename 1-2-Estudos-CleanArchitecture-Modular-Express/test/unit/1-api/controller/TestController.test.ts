@@ -1,4 +1,4 @@
-import { TestController } from '@/1-api/controller/TestController';
+import { TestController } from '@/1-Api/Controller/TestController';
 import { Request, Response } from 'express';
 
 describe('TestController', () => {

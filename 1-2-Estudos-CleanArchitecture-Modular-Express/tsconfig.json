@@ -48,7 +48,7 @@
   "include": [
     "src/**/*",
     "test/**/*",
-    "jest.config.ts",
+    "jest.global.config.ts",
     "Program.ts"
   ],
   "exclude": [

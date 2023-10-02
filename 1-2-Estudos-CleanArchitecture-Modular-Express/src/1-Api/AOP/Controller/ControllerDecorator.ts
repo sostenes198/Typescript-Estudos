@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { HttpMethod } from '@/1-api/http/enum/HttpMethod';
-import { MetadataControllerKey } from './enum/MetadataControllerKey';
+import { HttpMethod } from '../../Http/Enum/HttpMethod';
+import { MetadataControllerKey } from './Enum/MetadataControllerKey';
 import { v4 as uuidV4 } from 'uuid';
 
 export function HttpController(path: string) {
