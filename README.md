@@ -48,7 +48,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\Cursos-CriandoAPI-RESTful-TypeScript-Node-Mongo\\program.ts",
+      "program": "${workspaceFolder}\\Cursos-CriandoAPI-RESTful-TypeScript-Node-Mongo\\Program.ts",
       "runtimeArgs": [
         "-r",
         "ts-node/register",

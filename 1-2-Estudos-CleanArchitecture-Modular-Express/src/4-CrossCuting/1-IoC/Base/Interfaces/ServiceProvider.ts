@@ -1,5 +1,5 @@
-import { ServiceIdentifier } from '@/4-CrossCuting/1-IoC/Base/Types/ServiceIdentifier';
-import { ConfigureAction } from '@/4-CrossCuting/1-IoC/Base/Types/ConfigureAction';
+import { ServiceIdentifier } from '../Types/ServiceIdentifier';
+import { ConfigureAction } from '../Types/ConfigureAction';
 
 export interface ServiceProvider extends Disposable {
     PostConfigureAction(action: ConfigureAction): void;

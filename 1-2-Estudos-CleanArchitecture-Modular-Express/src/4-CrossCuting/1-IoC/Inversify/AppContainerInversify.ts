@@ -1,7 +1,7 @@
-import { ServiceProvider } from '@/4-CrossCuting/1-IoC/Base/Interfaces/ServiceProvider';
-import { ConfigureAction } from '@/4-CrossCuting/1-IoC/Base/Types/ConfigureAction';
+import { ServiceProvider } from '../Base/Interfaces/ServiceProvider';
+import { ConfigureAction } from '../Base/Types/ConfigureAction';
 import { Container, interfaces } from 'inversify';
-import { ServiceIdentifier } from '@/4-CrossCuting/1-IoC/Base/Types/ServiceIdentifier';
+import { ServiceIdentifier } from '../Base/Types/ServiceIdentifier';
 
 export class AppContainerInversify implements ServiceProvider, Disposable {
     private _container: Container;

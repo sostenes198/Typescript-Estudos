@@ -1,6 +1,6 @@
-import { ConfigureAction } from '@/4-CrossCuting/1-IoC/Base/Types/ConfigureAction';
-import { ServiceProvider } from '@/4-CrossCuting/1-IoC/Base/Interfaces/ServiceProvider';
-import { AppContainerInversify } from '@/4-CrossCuting/1-IoC/Inversify/AppContainerInversify';
+import { ConfigureAction } from './Base/Types/ConfigureAction';
+import { ServiceProvider } from './Base/Interfaces/ServiceProvider';
+import { AppContainerInversify } from './Inversify/AppContainerInversify';
 
 export class BootstrapperApplication {
     private constructor() {}

@@ -5,7 +5,6 @@ import { GlobalConfig } from '../../jest.global.config';
 // @ts-ignore
 const config: Config = {
     ...GlobalConfig,
-    testMatch: ['<rootDir>/test/unit/**/*.[jt]s?(x)', '!**/test/**/jest.config.ts'],
     displayName: {
         name: 'unit-test',
         color: 'magenta',

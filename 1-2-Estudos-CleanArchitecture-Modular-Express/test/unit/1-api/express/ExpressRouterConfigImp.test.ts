@@ -1,5 +1,5 @@
-import { ExpressRouterConfigImp } from '@/1-Api/Express/ExpressRouterConfigImp';
-import { ExpressControllerConfig } from '@/1-Api/Express/Interfaces/ExpressControllerConfig';
+import { ExpressRouterConfigImp } from '../../../../src/1-Api/Express/ExpressRouterConfigImp';
+import { ExpressControllerConfig } from '../../../../src/1-Api/Express/Interfaces/ExpressControllerConfig';
 
 describe('ExpressRouterConfigImp', () => {
     let expressRouterConfigImp: ExpressRouterConfigImp;

@@ -1,7 +1,7 @@
-import { MetadataControllerKey } from '@/1-Api/AOP/Controller/Enum/MetadataControllerKey';
+import { MetadataControllerKey } from '../AOP/Controller/Enum/MetadataControllerKey';
 import { LoaderModule } from '@/2-Commons/1-Infrastructure/Module/LoaderModule';
-import { ExpressRouterConfig } from '@/1-Api/Express/Interfaces/ExpressRouterConfig';
-import { ExpressControllerConfig } from '@/1-Api/Express/Interfaces/ExpressControllerConfig';
+import { ExpressRouterConfig } from './Interfaces/ExpressRouterConfig';
+import { ExpressControllerConfig } from './Interfaces/ExpressControllerConfig';
 
 export class ExpressRouterConfigImp implements ExpressRouterConfig {
     private readonly _expressControllerConfig: ExpressControllerConfig;

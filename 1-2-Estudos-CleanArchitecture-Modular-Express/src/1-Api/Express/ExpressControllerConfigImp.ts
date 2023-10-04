@@ -1,9 +1,9 @@
 import { Application, NextFunction, Request, Response } from 'express';
-import { MetadataControllerKey } from '@/1-Api/AOP/Controller/Enum/MetadataControllerKey';
-import { ExpressRouterFunc } from '@/1-Api/Express/Type/ExpressRouterFunc';
-import { HttpMethod } from '@/1-Api/Http/Enum/HttpMethod';
-import { ServiceProvider } from '@/4-CrossCuting/1-IoC/Base/Interfaces/ServiceProvider';
-import { ExpressControllerConfig } from '@/1-Api/Express/Interfaces/ExpressControllerConfig';
+import { MetadataControllerKey } from '../AOP/Controller/Enum/MetadataControllerKey';
+import { ExpressRouterFunc } from './Type/ExpressRouterFunc';
+import { HttpMethod } from '../Http/Enum/HttpMethod';
+import { ServiceProvider } from '../../4-CrossCuting/1-IoC/Base/Interfaces/ServiceProvider';
+import { ExpressControllerConfig } from './Interfaces/ExpressControllerConfig';
 
 export class ExpressControllerConfigImp implements ExpressControllerConfig {
     private readonly _app: Application;

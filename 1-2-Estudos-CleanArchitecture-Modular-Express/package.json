@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "clean": "if [ -d dist ]; then rm -rf dist;rm -rf coverage; fi;",
-    "build": "npm run clean && npx tsc --project tsconfig.json",
-    "build:watch": "npm run build -- --watch",
-    "build:diagnostic": "npm run build -- --diagnostics",
-    "build:diagnostic:watch": "npm run build:watch -- --diagnostics",
+    "build": "pnpm run clean && npx tsc --project tsconfig.json",
+    "build:watch": "pnpm run build --watch",
+    "build:diagnostic": "pnpm run build --diagnostics",
+    "build:diagnostic:watch": "pnpm run build:watch --diagnostics",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/program.js",
     "start:dev": "ts-node-dev --respawn --transpile-only --inspect=9229 --project tsconfig.json -r tsconfig-paths/register Program.ts",
-    "test": "npm run build && jest",
-    "test:unit": "npm run test -- --config ./test/unit/jest.config.ts --projects ./test/unit",
-    "test:unit:coverage": "npm run test:unit -- --coverage"
+    "test": "pnpm run build && jest",
+    "test:unit": "pnpm run test --config ./test/unit/jest.config.ts --projects ./test/unit",
+    "test:unit:coverage": "pnpm run test:unit --coverage"
   },
   "author": "",
   "license": "ISC",

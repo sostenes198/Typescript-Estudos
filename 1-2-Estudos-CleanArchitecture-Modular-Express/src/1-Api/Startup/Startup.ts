@@ -1,8 +1,8 @@
 import express, { Application } from 'express';
-import { ExpressRouterConfigImp } from '@/1-Api/Express/ExpressRouterConfigImp';
+import { ExpressRouterConfigImp } from '../Express/ExpressRouterConfigImp';
 import { BootstrapperApplication } from '@/4-CrossCuting/1-IoC/BootstrapperApplication';
 import { ConfigureAction } from '@/4-CrossCuting/1-IoC/Base/Types/ConfigureAction';
-import { ExpressControllerConfigImp } from '@/1-Api/Express/ExpressControllerConfigImp';
+import { ExpressControllerConfigImp } from '../Express/ExpressControllerConfigImp';
 
 class StartUp implements StartUp {
     private static readonly PORT: number = 3099;
