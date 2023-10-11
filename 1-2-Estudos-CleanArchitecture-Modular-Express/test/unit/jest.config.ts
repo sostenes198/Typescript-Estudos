@@ -9,6 +9,7 @@ const config: Config = {
         name: 'unit-test',
         color: 'magenta',
     },
+    setupFilesAfterEnv: [...GlobalConfig.setupFilesAfterEnv!],
 };
 
 export default config;

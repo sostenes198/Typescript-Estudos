@@ -16,9 +16,10 @@ export const GlobalConfig: Config = {
         '^.+\\.(t|j)s$': 'ts-jest',
     },
     coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/coverage/'],
-    collectCoverageFrom: ['<rootDir>/src/**/*.(t|j)s', '!**/Startup.ts'],
+    collectCoverageFrom: ['<rootDir>/src/**/*.(t|j)s', '!**/Startup.ts', '!**/BootstrapperApplication.ts'],
     coverageDirectory: '<rootDir>/coverage',
     coverageReporters: ['html'],
     preset: 'ts-jest',
     testEnvironment: 'node',
+    setupFilesAfterEnv: [],
 } as Config;

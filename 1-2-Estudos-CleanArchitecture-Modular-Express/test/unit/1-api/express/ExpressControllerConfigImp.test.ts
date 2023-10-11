@@ -2,7 +2,7 @@
 
 import { ExpressControllerConfigImp } from '@/1-Api/Express/ExpressControllerConfigImp';
 import { Application } from 'express';
-import { ServiceProvider } from '@/4-CrossCuting/1-IoC/Base/Interfaces/ServiceProvider';
+import { ServiceProvider } from '@/2-Commons/1-Infrastructure/IoC/Interfaces/ServiceProvider';
 import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '@/1-Api/AOP/Controller/ControllerDecorator';
 import { MetadataControllerKey } from '@/1-Api/AOP/Controller/Enum/MetadataControllerKey';
 import { ExpressControllerConfig } from '@/1-Api/Express/Interfaces/ExpressControllerConfig';
@@ -35,7 +35,7 @@ function _assertToBeCalledApplicationMocks(fn: jest.Mocked<Application>, get: nu
 
 function _assertToBeCalledServiceProviderMocks(fn: jest.Mocked<ServiceProvider>, postConfigureAction: number, tryAddSingletonScope: number, get: number, createScope: number) {
     expect(fn.PostConfigureAction).toHaveBeenCalledTimes(postConfigureAction);
-    expect(fn.TryAddSingletonScope).toHaveBeenCalledTimes(tryAddSingletonScope);
+    expect(fn.TryAddSingleton).toHaveBeenCalledTimes(tryAddSingletonScope);
     expect(fn.Get).toHaveBeenCalledTimes(get);
     expect(fn.CreateScope).toHaveBeenCalledTimes(createScope);
 }
@@ -54,7 +54,8 @@ describe('ExpressControllerConfigImp', () => {
         } as any;
         serviceProviderMock = {
             PostConfigureAction: jest.fn(),
-            TryAddSingletonScope: jest.fn(),
+            TryAddSingleton: jest.fn(),
+            TryAddTransient: jest.fn(),
             Get: jest.fn(),
             CreateScope: jest.fn(),
             [Symbol.dispose]: jest.fn(),

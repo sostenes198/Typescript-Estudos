@@ -1,5 +1,5 @@
-import { ConfigureAction } from '@/4-CrossCuting/1-IoC/Base/Types/ConfigureAction';
-import { ServiceProvider } from '@/4-CrossCuting/1-IoC/Base/Interfaces/ServiceProvider';
+import { ConfigureAction } from '@/2-Commons/1-Infrastructure/IoC/Types/ConfigureAction';
+import { ServiceProvider } from '@/2-Commons/1-Infrastructure/IoC/Interfaces/ServiceProvider';
 
 describe('ConfigureAction', () => {
     test('Should validate type ConfigureAction', () => {

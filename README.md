@@ -92,6 +92,33 @@
         }
     }
     ```
+   
+## Configurações GIT
+
+```bash
+#!/bin/bash
+
+# fetching new branches to avoid not found
+git fetch
+
+xcout=$(git checkout "$1" 2>&1)
+if [ "$?" -eq "0" ]; then
+	echo $xcout
+        xout=$(git branch | grep -v "$1" | xargs git branch -D 2>&1)
+        if [ "$?" -eq "0" ]; then
+                echo "Done!";
+        else
+                echo "Couldn't delete all local branches except branch '$1'. Motive: '$xout'";
+        fi
+else 
+        echo "the branch '$1' does not exist. Cannot proceed";
+fi
+```
+
+```
+[alias]
+	ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ -o .gitignore ;}; gi"
+```
 
 ## PNPM Gerenciador de pacotes mais eficientes:
 

@@ -2,7 +2,7 @@ import { Application, NextFunction, Request, Response } from 'express';
 import { MetadataControllerKey } from '../AOP/Controller/Enum/MetadataControllerKey';
 import { ExpressRouterFunc } from './Type/ExpressRouterFunc';
 import { HttpMethod } from '../Http/Enum/HttpMethod';
-import { ServiceProvider } from '../../4-CrossCuting/1-IoC/Base/Interfaces/ServiceProvider';
+import { ServiceProvider } from '@/2-Commons/1-Infrastructure/IoC/Interfaces/ServiceProvider';
 import { ExpressControllerConfig } from './Interfaces/ExpressControllerConfig';
 
 export class ExpressControllerConfigImp implements ExpressControllerConfig {
@@ -18,7 +18,7 @@ export class ExpressControllerConfigImp implements ExpressControllerConfig {
         const [controllerId, controllerPath] = this.GetControllerMetadata(target);
 
         this._serviceProvider.PostConfigureAction((serviceProvider) => {
-            serviceProvider.TryAddSingletonScope<T>(controllerId, target);
+            serviceProvider.TryAddSingleton<T>(controllerId, target);
         });
 
         const prototypeProps = Object.getOwnPropertyDescriptors(target.prototype);

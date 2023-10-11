@@ -1,4 +1,4 @@
-import { ServiceIdentifier } from '@/4-CrossCuting/1-IoC/Base/Types/ServiceIdentifier';
+import { ServiceIdentifier } from '@/2-Commons/1-Infrastructure/IoC/Types/ServiceIdentifier';
 
 describe('ServiceIdentifier', () => {
     test('Should validate type ServiceIdentifier', () => {

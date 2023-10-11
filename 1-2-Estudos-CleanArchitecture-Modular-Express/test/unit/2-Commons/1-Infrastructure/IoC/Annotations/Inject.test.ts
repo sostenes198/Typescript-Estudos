@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { Inject } from '@/4-CrossCuting/1-IoC/Base/Annotations/Inject';
-import { AnnotationsKey } from '@/4-CrossCuting/1-IoC/Base/Annotations/Enums/AnnotationsKey';
+import { Inject } from '@/2-Commons/1-Infrastructure/IoC/Annotations/Inject';
+import { AnnotationsKey } from '@/2-Commons/1-Infrastructure/IoC/Annotations/Enums/AnnotationsKey';
 
 class InjectUniTestClass {}
 

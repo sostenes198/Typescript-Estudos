@@ -1,3 +1,4 @@
+// TODO REFATORAR TESTES AQUI
 export default class IocTypes {
     private readonly _value: string;
 

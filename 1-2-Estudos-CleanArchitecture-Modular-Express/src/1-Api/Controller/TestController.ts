@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '../AOP/Controller/ControllerDecorator';
-import { Inject } from '@/4-CrossCuting/1-IoC/Base/Annotations/Inject';
+import { Inject } from '@/2-Commons/1-Infrastructure/IoC/Annotations/Inject';
 
 @Inject()
 @HttpController('test')
