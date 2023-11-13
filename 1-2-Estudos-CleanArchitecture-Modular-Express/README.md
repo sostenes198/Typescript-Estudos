@@ -7,3 +7,8 @@ pendências: estudos sobre:
 `kafakjs`
 
 `mongodb`
+
+
+## A fazer depois:
+
+`Criar gerenciador de configurações com hot-reaload e afins`

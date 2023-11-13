@@ -11,12 +11,13 @@ export const GlobalConfig: Config = {
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         prefix: '<rootDir>',
     }),
+    testMatch: ['**/test/unit/**/*.test.ts'],
     testPathIgnorePatterns: ['/node_modules/', '/coverage/'],
     transform: {
         '^.+\\.(t|j)s$': 'ts-jest',
     },
     coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/coverage/'],
-    collectCoverageFrom: ['<rootDir>/src/**/*.(t|j)s', '!**/Startup.ts', '!**/BootstrapperApplication.ts'],
+    collectCoverageFrom: ['<rootDir>/src/**/*.(t|j)s', '!**/StartUpImp.ts', '!**/BootstrapperApplication.ts', '!**/DependencyInjectionExtensions.ts'],
     coverageDirectory: '<rootDir>/coverage',
     coverageReporters: ['html'],
     preset: 'ts-jest',

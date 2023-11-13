@@ -1,8 +1,9 @@
 import { AppContainerInversify } from '@/4-CrossCuting/1-IoC/Inversify/AppContainerInversify';
-import { ConfigureAction } from '@/2-Commons/1-Infrastructure/IoC/Types/ConfigureAction';
+import { ConfigureAction } from '@/2-Commons/2-Application/IoC/Types/ConfigureAction';
 import { v4 as uuidV4 } from 'uuid';
-import { Inject } from '@/2-Commons/1-Infrastructure/IoC/Annotations/Inject';
+import { Inject } from '@/2-Commons/2-Application/IoC/Annotations/Inject';
 import '@test/base/Jest/Extensions';
+import { ScopeIoC } from '@/2-Commons/2-Application/IoC/Types/ScopeIoC';
 
 interface UnitTestDependency {
     Id: string;
@@ -42,14 +43,14 @@ describe('AppContainerInversify', () => {
         expect(executedGlobalAction).toStrictEqual(1);
     });
 
-    test('Should add transient dependency', () => {
+    test('Should add scoped dependency', () => {
         // arrange
         const serviceIdentifier = uuidV4();
 
         // act
-        container.AddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
-        container.AddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
-        container.AddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.AddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.AddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.AddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
 
         const result = container.List<UnitTestDependency>(serviceIdentifier);
 
@@ -60,19 +61,52 @@ describe('AppContainerInversify', () => {
         expect(ids).toBeDistinctArray();
     });
 
-    test('Should try add transient dependency', () => {
+    test('Should add scoped dynamic dependency', () => {
         // arrange
         const serviceIdentifier = uuidV4();
 
         // act
-        container.TryAddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
-        container.TryAddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
-        container.TryAddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.AddScopedDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.AddScopedDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.AddScopedDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+
+        const result = container.List<UnitTestDependency>(serviceIdentifier);
+
+        const ids = result.map((value) => value.Id);
+
+        // assert
+        expect(result.length).toStrictEqual(3);
+        expect(ids).toBeDistinctArray();
+    });
+
+    test('Should try add scoped dependency', () => {
+        // arrange
+        const serviceIdentifier = uuidV4();
+
+        // act
+        container.TryAddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.TryAddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.TryAddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
 
         const result = container.List<UnitTestDependency>(serviceIdentifier);
 
         // assert
+        expect(result.length).toStrictEqual(1);
+        expect(result[0].Id).not.BeNullOrUndefined();
+    });
 
+    test('Should try add scoped dynamic dependency', () => {
+        // arrange
+        const serviceIdentifier = uuidV4();
+
+        // act
+        container.TryAddScopedDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.TryAddScopedDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.TryAddScopedDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+
+        const result = container.List<UnitTestDependency>(serviceIdentifier);
+
+        // assert
         expect(result.length).toStrictEqual(1);
         expect(result[0].Id).not.BeNullOrUndefined();
     });
@@ -85,6 +119,24 @@ describe('AppContainerInversify', () => {
         container.AddSingleton<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
         container.AddSingleton<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
         container.AddSingleton<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+
+        const result = container.List<UnitTestDependency>(serviceIdentifier);
+
+        const ids = result.map((value) => value.Id);
+
+        // assert
+        expect(result.length).toStrictEqual(3);
+        expect(ids).toBeDistinctArray();
+    });
+
+    test('Should add singleton dynamic dependency', () => {
+        // arrange
+        const serviceIdentifier = uuidV4();
+
+        // act
+        container.AddSingletonDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.AddSingletonDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.AddSingletonDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
 
         const result = container.List<UnitTestDependency>(serviceIdentifier);
 
@@ -112,12 +164,50 @@ describe('AppContainerInversify', () => {
         expect(result[0].Id).not.BeNullOrUndefined();
     });
 
-    test('Should get transient dependency', () => {
+    test('Should try add singleton dynamic dependency', () => {
         // arrange
         const serviceIdentifier = uuidV4();
 
         // act
-        container.TryAddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.TryAddSingletonDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.TryAddSingletonDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+        container.TryAddSingletonDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+
+        const result = container.List<UnitTestDependency>(serviceIdentifier);
+
+        // assert
+
+        expect(result.length).toStrictEqual(1);
+        expect(result[0].Id).not.BeNullOrUndefined();
+    });
+
+    test('Should rebind dependency', () => {
+        // arrange
+        const serviceIdentifier = uuidV4();
+
+        const mock: jest.Mocked<UnitTestDependency> = {
+            Id: '999',
+        };
+
+        // act
+        container.TryAddSingletonDynamic<UnitTestDependency>(serviceIdentifier, () => new UnitTestDependencyClass());
+
+        container.RebindDynamic<UnitTestDependency>(serviceIdentifier, ScopeIoC.SINGLETON, () => {
+            return mock;
+        });
+
+        const result = container.Get<UnitTestDependency>(serviceIdentifier);
+
+        // assert
+        expect(result.Id).toStrictEqual('999');
+    });
+
+    test('Should get scoped dependency', () => {
+        // arrange
+        const serviceIdentifier = uuidV4();
+
+        // act
+        container.TryAddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
 
         const dependency1 = container.Get<UnitTestDependency>(serviceIdentifier);
         const dependency2 = container.Get<UnitTestDependency>(serviceIdentifier);
@@ -140,14 +230,14 @@ describe('AppContainerInversify', () => {
         expect(dependency1.Id).toStrictEqual(dependency2.Id);
     });
 
-    test('Should list transient dependencies', () => {
+    test('Should list scoped dependencies', () => {
         // arrange
         const serviceIdentifier = uuidV4();
 
         // act
-        container.AddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
-        container.AddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
-        container.AddTransient<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.AddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.AddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
+        container.AddScoped<UnitTestDependency>(serviceIdentifier, UnitTestDependencyClass);
 
         const dependency1 = container.List<UnitTestDependency>(serviceIdentifier);
         const dependency2 = container.List<UnitTestDependency>(serviceIdentifier);
@@ -174,28 +264,28 @@ describe('AppContainerInversify', () => {
 
     test('Should create scope', () => {
         // arrange
-        const serviceIdentifierTransient = uuidV4();
+        const serviceIdentifierScoped = uuidV4();
         const serviceIdentifierSingleton = uuidV4();
 
         // act
-        container.TryAddTransient<UnitTestDependency>(serviceIdentifierTransient, UnitTestDependencyClass);
+        container.TryAddScoped<UnitTestDependency>(serviceIdentifierScoped, UnitTestDependencyClass);
         container.TryAddSingleton<UnitTestDependency>(serviceIdentifierSingleton, UnitTestDependencyClass);
 
         const scope1 = container.CreateScope();
         const scope2 = container.CreateScope();
 
-        const containerDependencyTransient = container.Get<UnitTestDependency>(serviceIdentifierTransient);
-        const scope1DependencyTransient = scope1.Get<UnitTestDependency>(serviceIdentifierTransient);
-        const scope2DependencyTransient = scope2.Get<UnitTestDependency>(serviceIdentifierTransient);
+        const containerDependencyScoped = container.Get<UnitTestDependency>(serviceIdentifierScoped);
+        const scope1DependencyScoped = scope1.Get<UnitTestDependency>(serviceIdentifierScoped);
+        const scope2DependencyScoped = scope2.Get<UnitTestDependency>(serviceIdentifierScoped);
 
         const containerDependencySingleton = container.Get<UnitTestDependency>(serviceIdentifierSingleton);
         const scope1DependencySingleton = scope1.Get<UnitTestDependency>(serviceIdentifierSingleton);
         const scope2DependencySingleton = scope2.Get<UnitTestDependency>(serviceIdentifierSingleton);
 
         // assert
-        expect(containerDependencyTransient.Id).not.toStrictEqual(scope1DependencyTransient.Id);
-        expect(containerDependencyTransient.Id).not.toStrictEqual(scope2DependencyTransient.Id);
-        expect(scope1DependencyTransient.Id).not.toStrictEqual(scope2DependencyTransient.Id);
+        expect(containerDependencyScoped.Id).not.toStrictEqual(scope1DependencyScoped.Id);
+        expect(containerDependencyScoped.Id).not.toStrictEqual(scope2DependencyScoped.Id);
+        expect(scope1DependencyScoped.Id).not.toStrictEqual(scope2DependencyScoped.Id);
 
         expect(containerDependencySingleton.Id).toStrictEqual(scope1DependencySingleton.Id);
         expect(containerDependencySingleton.Id).toStrictEqual(scope2DependencySingleton.Id);

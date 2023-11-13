@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '../AOP/Controller/ControllerDecorator';
-import { Inject } from '@/2-Commons/1-Infrastructure/IoC/Annotations/Inject';
+import { Inject } from '@/2-Commons/2-Application/IoC/Annotations/Inject';
 
 @Inject()
 @HttpController('test')
@@ -11,7 +11,8 @@ export class TestController {
     async Get(req: Request, res: Response): Promise<void> {
         console.log(req);
         console.log(res);
-        res.send('ARROCHA');
+
+        res.send('FOI');
     }
 
     @HttpPost('post')

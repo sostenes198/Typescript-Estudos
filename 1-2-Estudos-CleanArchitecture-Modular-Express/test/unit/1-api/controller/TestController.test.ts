@@ -8,58 +8,48 @@ describe('TestController', () => {
         testController = new TestController();
     });
 
-    describe('Get', () => {
-        test('Should Get', () => {
-            testController.Get(
-                {} as Request,
-                {
-                    send: () => {},
-                } as Response,
-            );
-        });
+    test('Should Get', () => {
+        testController.Get(
+            {} as Request,
+            {
+                send: () => {},
+            } as Response,
+        );
     });
 
-    describe('Post', () => {
-        test('Should Post', () => {
-            testController.Post(
-                {} as Request,
-                {
-                    send: () => {},
-                } as Response,
-            );
-        });
+    test('Should Post', () => {
+        testController.Post(
+            {} as Request,
+            {
+                send: () => {},
+            } as Response,
+        );
     });
 
-    describe('Put', () => {
-        test('Should Put', () => {
-            testController.Put(
-                {} as Request,
-                {
-                    send: () => {},
-                } as Response,
-            );
-        });
+    test('Should Put', () => {
+        testController.Put(
+            {} as Request,
+            {
+                send: () => {},
+            } as Response,
+        );
     });
 
-    describe('Delete', () => {
-        test('Should Delete', () => {
-            testController.Delete(
-                {} as Request,
-                {
-                    send: () => {},
-                } as Response,
-            );
-        });
+    test('Should Delete', () => {
+        testController.Delete(
+            {} as Request,
+            {
+                send: () => {},
+            } as Response,
+        );
     });
 
-    describe('Test', () => {
-        test('Should Test', () => {
-            testController.Test(
-                {} as Request,
-                {
-                    send: () => {},
-                } as Response,
-            );
-        });
+    test('Should Test', () => {
+        testController.Test(
+            {} as Request,
+            {
+                send: () => {},
+            } as Response,
+        );
     });
 });

@@ -2,7 +2,7 @@ import { Application, NextFunction, Request, Response } from 'express';
 import { MetadataControllerKey } from '../AOP/Controller/Enum/MetadataControllerKey';
 import { ExpressRouterFunc } from './Type/ExpressRouterFunc';
 import { HttpMethod } from '../Http/Enum/HttpMethod';
-import { ServiceProvider } from '@/2-Commons/1-Infrastructure/IoC/Interfaces/ServiceProvider';
+import { ServiceProvider } from '@/2-Commons/2-Application/IoC/ServiceProvider';
 import { ExpressControllerConfig } from './Interfaces/ExpressControllerConfig';
 
 export class ExpressControllerConfigImp implements ExpressControllerConfig {
@@ -44,7 +44,10 @@ export class ExpressControllerConfigImp implements ExpressControllerConfig {
         return [controllerId, controllerPath];
     }
 
-    private GetControllerMethodMetadata<T>(target: new (...param: any[]) => T, methodTarget: string): [hasMethodDecorator: boolean, methodRequestPath: string, method: string] {
+    private GetControllerMethodMetadata<T>(
+        target: new (...param: any[]) => T,
+        methodTarget: string,
+    ): [hasMethodDecorator: boolean, methodRequestPath: string, method: string] {
         const methodRequestPath = Reflect.getMetadata(MetadataControllerKey.CONTROLLER_METHOD_PATH, target.prototype, methodTarget);
         const method = Reflect.getMetadata(MetadataControllerKey.CONTROLLER_METHOD, target.prototype, methodTarget);
 
@@ -72,6 +75,8 @@ export class ExpressControllerConfigImp implements ExpressControllerConfig {
             try {
                 const controller: any = scope.Get<T>(targetId);
                 controller[methodTarget](req, res, next);
+            } catch (err) {
+                res.status(500).send(err);
             } finally {
                 scope[Symbol.dispose]();
             }

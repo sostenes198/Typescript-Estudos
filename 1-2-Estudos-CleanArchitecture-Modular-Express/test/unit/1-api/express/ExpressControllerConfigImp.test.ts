@@ -2,7 +2,7 @@
 
 import { ExpressControllerConfigImp } from '@/1-Api/Express/ExpressControllerConfigImp';
 import { Application } from 'express';
-import { ServiceProvider } from '@/2-Commons/1-Infrastructure/IoC/Interfaces/ServiceProvider';
+import { ServiceProvider } from '@/2-Commons/2-Application/IoC/ServiceProvider';
 import { HttpController, HttpDelete, HttpGet, HttpPost, HttpPut } from '@/1-Api/AOP/Controller/ControllerDecorator';
 import { MetadataControllerKey } from '@/1-Api/AOP/Controller/Enum/MetadataControllerKey';
 import { ExpressControllerConfig } from '@/1-Api/Express/Interfaces/ExpressControllerConfig';
@@ -33,7 +33,13 @@ function _assertToBeCalledApplicationMocks(fn: jest.Mocked<Application>, get: nu
     expect(fn.delete).toHaveBeenCalledTimes(deleter);
 }
 
-function _assertToBeCalledServiceProviderMocks(fn: jest.Mocked<ServiceProvider>, postConfigureAction: number, tryAddSingletonScope: number, get: number, createScope: number) {
+function _assertToBeCalledServiceProviderMocks(
+    fn: jest.Mocked<ServiceProvider>,
+    postConfigureAction: number,
+    tryAddSingletonScope: number,
+    get: number,
+    createScope: number,
+) {
     expect(fn.PostConfigureAction).toHaveBeenCalledTimes(postConfigureAction);
     expect(fn.TryAddSingleton).toHaveBeenCalledTimes(tryAddSingletonScope);
     expect(fn.Get).toHaveBeenCalledTimes(get);
@@ -55,7 +61,7 @@ describe('ExpressControllerConfigImp', () => {
         serviceProviderMock = {
             PostConfigureAction: jest.fn(),
             TryAddSingleton: jest.fn(),
-            TryAddTransient: jest.fn(),
+            TryAddScoped: jest.fn(),
             Get: jest.fn(),
             CreateScope: jest.fn(),
             [Symbol.dispose]: jest.fn(),
@@ -104,30 +110,56 @@ describe('ExpressControllerConfigImp', () => {
         serviceProviderMock.Get.mockImplementation(() => new ControllerToUnitTest());
 
         // act
-        await (expressControllerConfig as ExpressControllerConfigImp)['ExpressDefaultRequest'].call(expressControllerConfig, id, 'Get')({} as any, {} as any, {} as any);
+        await (expressControllerConfig as ExpressControllerConfigImp)['ExpressDefaultRequest'].call(expressControllerConfig, id, 'Get')(
+            {} as any,
+            {} as any,
+            {} as any,
+        );
 
         // assert
         _assertToBeCalledServiceProviderMocks(serviceProviderMock, 0, 0, 1, 1);
         expect(serviceProviderMock.Get).toHaveBeenCalledWith(id);
     });
 
-    test('Should  thrown when failed to execute ExpressDefaultRequest', async () => {
+    test('Should  return responded status 500 send error ', async () => {
         // arrange
         const id = Reflect.getMetadata(MetadataControllerKey.CONTROLLER_ID, ControllerToUnitTest);
+
+        const statusExpected: number = 500;
+        const errorExpected: Error = new Error('Fail');
 
         serviceProviderMock.CreateScope.mockImplementation(() => serviceProviderMock);
 
         serviceProviderMock.Get.mockImplementation(() => {
-            throw new Error('Fail');
+            throw errorExpected;
         });
 
+        let statusReceived: number = 0;
+        let errReceived: unknown;
+
+        const restMock = {
+            status: function (status: number) {
+                statusReceived = status;
+                return this;
+            },
+            send: function (result: unknown) {
+                errReceived = result;
+                return this;
+            },
+        };
+
         // act
-        await expect((expressControllerConfig as ExpressControllerConfigImp)['ExpressDefaultRequest'].call(expressControllerConfig, id, 'Get')({} as any, {} as any, {} as any)).rejects.toThrow(
-            new Error('Fail'),
+        await (expressControllerConfig as ExpressControllerConfigImp)['ExpressDefaultRequest'].call(expressControllerConfig, id, 'Get')(
+            {} as any,
+            restMock as any,
+            {} as any,
         );
 
         // assert
+        expect(statusReceived).toStrictEqual(statusExpected);
+        expect(errReceived).toStrictEqual(errorExpected);
         _assertToBeCalledServiceProviderMocks(serviceProviderMock, 0, 0, 1, 1);
+        _assertToBeCalledApplicationMocks(appMock, 0, 0, 0, 0);
         expect(serviceProviderMock.Get).toHaveBeenCalledWith(id);
     });
 });
