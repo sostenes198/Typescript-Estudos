@@ -1,0 +1,34 @@
+version: "3.4"
+
+services:
+  mongo:
+    image: mongo
+    container_name: 'mongo'
+    networks:
+      - Integration-Test-CleanArchitecture-Modular-Express
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./scripts/CREATE_DATABASE_MONGO.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Password
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    networks:
+      - Integration-Test-CleanArchitecture-Modular-Express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: Password
+      ME_CONFIG_MONGODB_URL: mongodb://root:Password@mongo:27017/
+    depends_on:
+      - mongo
+
+networks:
+  Integration-Test-CleanArchitecture-Modular-Express:
+    driver: bridge

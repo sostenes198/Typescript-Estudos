@@ -1,3 +1,9 @@
 {
-  "PROP1": "AWE - CONFIG"
+  "Mongo": {
+    "User": "root",
+    "Password": "Password",
+    "Server": "mongodb://localhost",
+    "Port": 27017,
+    "DatabaseName": "CleanArchitecture"
+  }
 }

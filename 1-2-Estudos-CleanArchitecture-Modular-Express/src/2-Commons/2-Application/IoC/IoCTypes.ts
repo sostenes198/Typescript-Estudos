@@ -1,3 +1,5 @@
+// TODO TESTAR AQUI NOVAMENTE
+
 export default class IocTypes {
     private readonly _value: string;
 
@@ -11,5 +13,13 @@ export default class IocTypes {
 
     public static get Configuration(): IocTypes {
         return new IocTypes('Configuration');
+    }
+
+    public static get MongoOption(): IocTypes {
+        return new IocTypes('MongoOption');
+    }
+
+    public static get MongoService(): IocTypes {
+        return new IocTypes('MongoService');
     }
 }

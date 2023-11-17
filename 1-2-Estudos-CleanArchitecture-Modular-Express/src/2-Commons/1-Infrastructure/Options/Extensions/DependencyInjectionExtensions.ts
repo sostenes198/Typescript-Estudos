@@ -8,7 +8,7 @@ import { OptionsImp } from '@/2-Commons/1-Infrastructure/Options/OptionsImp';
 import { ServiceIdentifier } from '@/2-Commons/2-Application/IoC/Types/ServiceIdentifier';
 
 export class DependencyInjectionExtensions {
-    public static AddConfigurationProvider(service: ServiceProvider, act: (configurationRootProvider: ConfigurationProvider) => void) {
+    public static AddConfigurationProvider(service: ServiceProvider, act: (configurationRootProvider: ConfigurationProvider) => void): void {
         service.TryAddSingletonDynamic<Configuration>(IocTypes.Configuration.Value, () => {
             const configurationProvider = new ConfigurationNConfProvider();
             act(configurationProvider);
@@ -16,7 +16,7 @@ export class DependencyInjectionExtensions {
         });
     }
 
-    public static AddOptions<TOptions extends object>(service: ServiceProvider, identifier: ServiceIdentifier, pathObj: string) {
+    public static AddOptions<TOptions extends object>(service: ServiceProvider, identifier: ServiceIdentifier, pathObj: string): void {
         service.TryAddSingletonDynamic<Options<TOptions>>(identifier, (provider: ServiceProvider) => {
             const configuration = provider.Get<Configuration>(IocTypes.Configuration.Value);
             const opt = configuration.Get<TOptions>(pathObj);
