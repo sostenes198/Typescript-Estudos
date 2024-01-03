@@ -28,7 +28,7 @@ const _assertBody = (
   body: object,
   bodyExpected?: object | ((body: object) => void),
 ): void => {
-  if (!bodyExpected) {
+  if (bodyExpected) {
     if (typeof bodyExpected === 'function') {
       bodyExpected(body);
     } else {
