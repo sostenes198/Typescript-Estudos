@@ -1,36 +1,51 @@
 import { Request, Response } from "express";
 import axios, { AxiosError } from "axios";
 import newrelic from "newrelic";
+import { serviceExecute } from "../services/service";
+import { child, info } from "../services/utils/logger";
+import { randomUUID } from "crypto";
+
 
 // noinspection ExceptionCaughtLocallyJS
 export default class AppController {
   async get(req: Request, res: Response) {
-      await newrelic.startSegment("customSpan:app-1", true, async () => {
-        try {
-          const result = await axios.get("http://localhost:3011/api/app-2");
+    child({ logsApp: "app-1", logTrace: randomUUID() });
+    info("INICIALIZANDO GET CONTROLLER", { controller: "app-1" });
+    newrelic.addCustomAttribute("custom-attribute-out-of-ct-app-1", "1");
+    newrelic.addCustomSpanAttribute("custom-span-attribute-out-of-ct-app-1", "1");
+    await newrelic.startSegment("customSpan:app-1", true, async () => {
+      info("INICIALIZANDO span custom span-app-1", { span: "app-1" });
+      try {
+        newrelic.addCustomAttribute("custom-attribute-inside-of-ct-app-1", "1");
+        newrelic.addCustomSpanAttribute("custom-span-attribute-inside-of-ct-app-1", "1");
+        const service2Result = await serviceExecute();
 
-          res.status(200).json({
-            service1: {
-              name: "APP-1",
-              status: "OK",
-              service2: result.data
-            }
-          });
-        } catch (err) {
-          let message = null;
-          if (err instanceof Error)
-            message = err.message;
+        res.status(200).json({
+          service1: {
+            name: "APP-1",
+            status: "OK",
+            service2: service2Result
+          }
+        });
+      } catch (err) {
+        let message = null;
+        if (err instanceof Error)
+          message = err.message;
 
-          if (err instanceof AxiosError)
-            message = err.response!.data;
+        if (err instanceof AxiosError)
+          message = err.response!.data;
 
 
-          res.status(500).json({
-            message: "Internal Server Error! APP 2",
-            error: message
-          });
-        }
-      });
+        res.status(500).json({
+          message: "Internal Server Error! APP 2",
+          error: message
+        });
+
+        info("FINALIZANDO span custom span-app-1", { span: "app-1" });
+      }
+    });
+
+    info("FINALIZANDO GET CONTROLLER", { controller: "app-1" });
   }
 
   async get_with_error(req: Request, res: Response) {

@@ -1,7 +1,6 @@
 "use strict";
 require("dotenv/config");
 
-console.log(`NEW RELIC KEY ${process.env.NEW_RELIC_LICENCE_KEY}`);
 /**
  * New Relic agent configuration.
  *
@@ -25,6 +24,11 @@ exports.config = {
      * production applications.
      */
     level: "info"
+  },
+  application_logging: {
+    forwarding: {
+      enabled: true
+    }
   },
   /**
    * When true, all request headers except for those listed in attributes.exclude
