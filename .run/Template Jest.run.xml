@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="true" type="JavaScriptTestRunnerJest">
-    <config-file value="$PROJECT_DIR$/1-2-Estudos-CleanArchitecture-Modular-Express/test/integration/jest.config.ts" />
+    <config-file value="$PROJECT_DIR$/1-3-Estudos-TestContainer/tests/jest.config.ts" />
     <node-interpreter value="project" />
-    <working-dir value="$PROJECT_DIR$/1-2-Estudos-CleanArchitecture-Modular-Express" />
+    <working-dir value="$PROJECT_DIR$/1-3-Estudos-TestContainer" />
     <envs />
     <scope-kind value="ALL" />
     <method v="2" />

@@ -11,6 +11,7 @@ class LocalStorage {
 
   private cls: AsyncLocalStorage<any> | undefined;
 
+
   constructor() {
     if (LocalStorage.Instance) {
       throw new Error(
