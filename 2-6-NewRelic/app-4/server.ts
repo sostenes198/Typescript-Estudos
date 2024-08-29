@@ -10,6 +10,7 @@ const PORT: number = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 app
   .listen(PORT, "localhost", async function() {
     await Kafka.connect();
+    await Kafka.consume();
     console.log(`Server is running on port ${PORT}.`);
   })
   .on("error", (err: any) => {
