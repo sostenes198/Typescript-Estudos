@@ -8,6 +8,10 @@ declare global {
       beNullOrUndefined(): R;
       assertProperties(assertProperties: Array<AssertPropertiesObj>): R;
     }
+
+    interface Expect {
+      customAssert(expectedResult: any): CustomMatcherResult;
+    }
   }
 }
 
@@ -47,6 +51,15 @@ expect.extend({
     return {
       message: () => `expected ${received} contains all properties`,
       pass: true,
+    };
+  },
+
+  customAssert(result: any, expectedResult: any): CustomMatcherResult {
+    expect(result).toMatchObject(expectedResult);
+
+    return {
+      pass: true,
+      message: () => '',
     };
   },
 });
