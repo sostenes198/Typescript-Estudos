@@ -1,4 +1,4 @@
-import { waitSeconds } from '../../src/baseWaitSeconds';
+import { waitSeconds } from '@/baseWaitSeconds';
 
 describe('example of asynchronous testing', () => {
     test('testing with async/await', async () => {

@@ -1,4 +1,4 @@
-import { double, concat } from '../../src/baseMethods';
+import { double, concat } from '@/baseMethods';
 
 describe('testing index file', () => {
     test('double function', () => {

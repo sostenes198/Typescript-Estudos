@@ -1,27 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any,no-nested-ternary,no-plusplus */
 import nock from 'nock';
-import { sign } from 'jsonwebtoken';
 
-const _getParams = (scope: nock.Scope) => {
+const _getParams = (scope: nock.Scope, index: number) => {
   const { interceptors } = scope as any;
-  const intercept = interceptors[0];
+  const intercept = interceptors[index];
 
-  const body: object = intercept.req!.requestBodyBuffers[0]
-    ? JSON.parse(intercept.req!.requestBodyBuffers[0])
+  const body: object = intercept.req!
+    ? intercept.req.requestBodyBuffers[0]
+      ? JSON.parse(intercept.req.requestBodyBuffers[0])
+      : {}
     : {};
-  const { headers } = intercept.req;
 
+  const headers: any = intercept.req?.headers ?? {};
 
-  const expectedToken: string = sign(
-    {
-      client_id: '123',
-      user_id: '4567',
-    },
-    'NONE',
-    { noTimestamp: true },
-  );
-
-  return { interceptors, body, headers, expectedToken };
+  return { interceptors, body, headers };
 };
 
 const _assertBody = (
@@ -37,36 +29,69 @@ const _assertBody = (
   }
 };
 
+const _assertHeaders = (
+  headers: any,
+  headersExpected?: object | ((headers: any) => void),
+): void => {
+  if (headersExpected) {
+    if (typeof headersExpected === 'function') {
+      headersExpected(headers);
+    } else {
+      expect(headers).toStrictEqual(headersExpected);
+    }
+  }
+};
+
 const _assert = (
   scope: nock.Scope,
   interceptors: any,
+  interceptorsLength: number,
   headers: any,
   body: object,
-  expectedToken: string,
   bodyExpected?: object | ((body: object) => void),
+  headersExpected?: object | ((headers: any) => void),
 ): void => {
   scope.done();
 
-  expect(interceptors.length).toStrictEqual(1);
+  expect(interceptors.length).toStrictEqual(interceptorsLength);
 
   _assertBody(body, bodyExpected);
-
-  expect(headers['content-type']).toStrictEqual('application/json');
-  expect(headers.authorization).toStrictEqual(`Bearer ${expectedToken}`);
+  _assertHeaders(headers, headersExpected);
 };
 
-export const assertNoqGraphqlRequest = (
+export const assertNoqRequest = (
   scope: nock.Scope,
   bodyExpected?: object | ((body: object) => void),
+  headersExpected?: object | ((headers: any) => void),
 ): void => {
-  const { interceptors, body, headers, expectedToken } =
-    _getParams(scope);
-  _assert(
-    scope,
-    interceptors,
-    headers,
-    body,
-    expectedToken,
-    bodyExpected,
-  );
+  const { interceptors, body, headers } = _getParams(scope, 0);
+  _assert(scope, interceptors, 1, headers, body, bodyExpected, headersExpected);
+};
+
+export const assertNoqMultiplesRequest = (
+  scope: nock.Scope,
+  lengthCalledRequests: number,
+  multiplesExpected?: {
+    bodyExpected?: object | ((body: object) => void);
+    headersExpected?: object | ((headers: any) => void);
+  }[],
+): void => {
+  for (let i = 0; i < lengthCalledRequests; i++) {
+    const { interceptors, body, headers } = _getParams(scope, i);
+    let bodyExpected;
+    let headersExpected;
+    if (multiplesExpected && multiplesExpected[i]) {
+      bodyExpected = multiplesExpected[i].bodyExpected;
+      headersExpected = multiplesExpected[i].headersExpected;
+    }
+    _assert(
+      scope,
+      interceptors,
+      lengthCalledRequests,
+      headers,
+      body,
+      bodyExpected,
+      headersExpected,
+    );
+  }
 };

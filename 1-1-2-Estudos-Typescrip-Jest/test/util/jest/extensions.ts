@@ -6,14 +6,31 @@ declare global {
   namespace jest {
     interface Matchers<R> {
       beNullOrUndefined(): R;
+
       assertProperties(assertProperties: Array<AssertPropertiesObj>): R;
     }
 
     interface Expect {
-      customAssert(expectedResult: any): CustomMatcherResult;
+      customAssert(
+        assertFunc: (result: any) => CustomMatcherResult,
+      ): CustomMatcherResult;
     }
   }
 }
+
+const _matchType = (
+  type: AssertPropertiesTypes,
+  expectedObj: AssertPropertiesObj,
+): void => {
+  try {
+    expect(type).toStrictEqual(expectedObj.typeProperty);
+  } catch (e) {
+    const parsedError: Error = e as Error;
+    throw new Error(
+      `${parsedError.message}\nProperty: ${expectedObj.propertyName}`,
+    );
+  }
+};
 
 expect.extend({
   beNullOrUndefined(received: any): CustomMatcherResult {
@@ -43,9 +60,12 @@ expect.extend({
 
     assertProperties.forEach((element: AssertPropertiesObj) => {
       const describe: PropertyDescriptor | undefined =
-        Object.getOwnPropertyDescriptor(received, element.propertyName)!;
+        Object.getOwnPropertyDescriptor(
+          received,
+          element.propertyName,
+        )!;
       const type: AssertPropertiesTypes = typeof describe.value;
-      expect(type).toStrictEqual(element.typeProperty);
+      _matchType(type, element);
     });
 
     return {
@@ -53,13 +73,10 @@ expect.extend({
       pass: true,
     };
   },
-
-  customAssert(result: any, expectedResult: any): CustomMatcherResult {
-    expect(result).toMatchObject(expectedResult);
-
-    return {
-      pass: true,
-      message: () => '',
-    };
+  customAssert(
+    result: any,
+    assertFunc: (result: any) => CustomMatcherResult,
+  ): CustomMatcherResult {
+    return assertFunc(result);
   },
 });

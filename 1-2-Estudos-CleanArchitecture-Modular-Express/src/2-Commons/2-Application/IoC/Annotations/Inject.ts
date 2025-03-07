@@ -28,3 +28,5 @@ export function InjectMultiParam(identifier: string) {
         Reflect.defineMetadata(AnnotationsKey.INJECT_PARAM, identifier, target, propertyKey);
     };
 }
+
+
