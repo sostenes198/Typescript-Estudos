@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    // --- Configurações que vieram ---
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "noImplicitThis": false,
+
+    // --- Suas Configurações Locais (Mantidas) ---
+    "outDir": "dist",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ],
+    "types": [
+      "node",
+      "jest"
+    ],
+
+    // Configurações importantes para decorators (Provavelmente NestJS ou TypeORM)
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "./index.ts",
+    "./src/**/*",
+    "./tests/**/*"
+  ],
+  "exclude": [
+    "./node_modules/**/*",
+    "./dist/**/*"
+  ]
+}

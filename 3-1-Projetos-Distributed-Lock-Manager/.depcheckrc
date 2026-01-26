@@ -1,0 +1,12 @@
+skip-missing: true
+ignores: [
+  "@types/jest",
+  "@types/node",
+  "prettier",
+  "rimraf",
+  "ts-jest",
+  "ts-node",
+  "depcheck",
+  "typescript",
+  "eslint"
+]
