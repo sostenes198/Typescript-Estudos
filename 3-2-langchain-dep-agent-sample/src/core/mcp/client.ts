@@ -9,9 +9,9 @@ import { config } from '../../config';
  *   O cliente spawna os processos como filhos, comunicando via stdin/stdout.
  *   Protocolo MCP real (JSON-RPC 2.0) sobre stdio.
  *
- * RISK — HTTP Streamable:
+ * RISK — HTTP (Streamable HTTP):
  *   O cliente conecta ao servidor HTTP externo.
- *   Protocolo MCP real sobre HTTP Streamable (mais novo que SSE).
+ *   Protocolo MCP sobre HTTP Streamable (transport: 'http' na v1 dos adapters).
  *
  * Cada servidor expõe UMA tool (facade):
  *   pay_process_card      → PAY
@@ -49,7 +49,7 @@ export async function createMcpClient(): Promise<{
 
     // ── RISK — HTTP Streamable ─────────────────────────────────────────────
     'risk-domain': {
-      transport: 'streamable_http',
+      transport: 'http',
       url: config.mcps.risk.url,
       headers: {
         Authorization: `Bearer ${config.mcps.risk.token}`,

@@ -58,4 +58,8 @@ export const config = {
     port: parseInt(process.env.PORT ?? '3000', 10),
     nodeEnv: process.env.NODE_ENV ?? 'development',
   },
+  langsmith: {
+    enabled: process.env.LANGCHAIN_TRACING_V2 === 'true',
+    project: process.env.LANGCHAIN_PROJECT ?? 'dep-agent',
+  },
 } as const;

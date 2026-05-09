@@ -84,7 +84,7 @@ app.get('/health', (_, res) =>
     version: '1.0.0',
     board: 'RISK',
     labels: ['RISK_ASSESSMENT', 'RISK_ACCOUNT_FREEZE'],
-    transport: 'streamable_http',
+    transport: 'http',
     ts: new Date().toISOString(),
   })
 );
