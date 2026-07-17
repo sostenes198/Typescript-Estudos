@@ -28,7 +28,7 @@ const server = new McpServer({
 
 server.tool(
   'pay_process_card',
-  'Processa um card do board PAY. Roteia internamente por label para os agentes especialistas (FraudDetectionRule, CardCancel). Retorna DomainResult em JSON.',
+  'Processa um card do board PAY. Roteia internamente por label para os agentes especialistas\ (FraudDetectionRule, CardCancel). Retorna DomainResult em JSON.',
   { cardData: jiraCardDataSchema },
   async ({ cardData }) => {
     const result = await runPayOrchestrator(cardData as any);
