@@ -1,0 +1,17 @@
+{
+  "name": "3-3-Projetos-DNS-Proxy-TLS-Cognito-Callback-Local",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Servidor DNS recursivo em Node.js (estudo) + proxy local de desenvolvimento que o utiliza",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dns": "node src/index.js",
+    "dns:trace": "node src/index.js --trace",
+    "proxy": "node src/proxy.js",
+    "tls": "node src/tls-proxy.js",
+    "query": "node src/cli.js",
+    "test": "node --test"
+  }
+}

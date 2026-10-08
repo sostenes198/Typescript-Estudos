@@ -1,0 +1,8 @@
+{
+  "app.callback.test": { "A": "127.0.0.1" },
+  "callback.test": { "A": "127.0.0.1" },
+  "*.hooks.test": { "A": "127.0.0.1", "ttl": 10 },
+  "api.callback.test": { "CNAME": "callback.test" },
+  "dual.test": { "A": "127.0.0.1", "AAAA": "::1" },
+  "notas.test": { "TXT": "dominio falso de desenvolvimento" }
+}
