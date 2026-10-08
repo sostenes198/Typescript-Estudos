@@ -32,6 +32,27 @@ aponta para outro servidor DNS (padrão `127.0.0.1:5300`).
 > A porta 53 exige root e costuma estar ocupada (systemd-resolved, mDNSResponder). Como o proxy
 > consulta o servidor direto, não é preciso mudar o DNS do sistema. Se quiser, `--port 53` com sudo.
 
+## Subir e derrubar tudo de uma vez (macOS)
+
+```bash
+npm run up      # instala o que falta, gera o certificado, cria o resolver e sobe DNS + proxy + tls-proxy (pede sudo)
+npm run down    # para tudo e desfaz o que o up criou
+```
+
+Os dois podem ser interrompidos e rodados de novo: o que já existe (`up`) ou já não existe (`down`) é pulado.
+O domínio padrão é `app.callback.test` (`DOMAIN=outro.nome npm run up` para trocar; use o mesmo valor no `down`).
+O front e a callback do Cognito continuam manuais; o `up` imprime o que falta. O `down` não mexe no `zones.json`,
+no mkcert nem na CA local.
+
+- **Portas**: DNS 5300, proxy 5556 e tls-proxy 443 (`TLS_PORT=8443 npm run up` evita o sudo na porta; o front HTTP
+  é esperado em 5555, ajustável com `FRONT_PORT`). Se uma dessas portas estiver ocupada por um processo que o
+  `up` não gerencia (outra cópia deste estudo, ou um `npm run dns/proxy/tls` aberto à mão), ele para com erro em
+  vez de fingir que subiu. Essa checagem acontece no passo 6, depois do certificado e do resolver; se o `up`
+  falhar ali, rode `npm run down` para desfazer o que ele já criou.
+- **Gerado em tempo de execução**: `certs/` (certificado e chave privada do mkcert) e `.run/` (logs). Ambos estão
+  no `.gitignore` deste projeto.
+- O `down` encontra os processos pelo caminho absoluto de `src/*.js`, então não encerra servidores de outros projetos.
+
 ## Estrutura
 
 | Arquivo | O que faz |
@@ -46,6 +67,7 @@ aponta para outro servidor DNS (padrão `127.0.0.1:5300`).
 | `src/proxy.js` | Seu proxy, usando o `lookup` acima |
 | `src/tls-proxy.js` | Terminador HTTPS: recebe HTTPS (certificado do mkcert) e repassa para um dev server HTTP, como o do Flutter web (inclui WebSocket) |
 | `src/index.js`, `src/cli.js` | Executáveis: servidor e mini-dig |
+| `scripts/up.sh`, `scripts/down.sh` | Sobem e derrubam tudo (ferramentas, certificado, resolver do macOS, DNS, proxy, tls-proxy) |
 
 ## Domínios locais (zona local)
 

@@ -12,6 +12,8 @@
     "proxy": "node src/proxy.js",
     "tls": "node src/tls-proxy.js",
     "query": "node src/cli.js",
-    "test": "node --test"
+    "test": "node --test",
+    "up": "/bin/bash scripts/up.sh",
+    "down": "/bin/bash scripts/down.sh"
   }
 }

@@ -1,0 +1,3 @@
+# gerados por `npm run up`: certificado + chave privada do mkcert e logs dos servidores
+certs/
+.run/
