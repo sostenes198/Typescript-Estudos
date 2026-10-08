@@ -3,9 +3,6 @@ import { z } from 'zod';
 /**
  * Schema Zod do JiraCardData — usado como inputSchema da tool MCP de cada servidor.
  * Espelha exatamente o tipo JiraCardData de core/types/index.ts.
- *
- * Em produção (repos separados), este schema seria importado de um pacote
- * compartilhado: @voll/dep-agent-core-types
  */
 export const jiraCardDataSchema = z.object({
   id: z.string().describe('ID do card. Ex: PAY-2676'),

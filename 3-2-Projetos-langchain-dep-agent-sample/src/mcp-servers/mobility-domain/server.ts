@@ -2,7 +2,6 @@
  * Mobility Domain MCP Server — transporte stdio
  *
  * Expõe UMA tool: mobility_process_card
- * Em produção: @voll/dep-agent-mobility-domain
  */
 
 import 'dotenv/config';

@@ -2,7 +2,6 @@
  * Risk Domain MCP Server — transporte HTTP Streamable
  *
  * Servidor HTTP externo independente. O dep-agent conecta via HTTP Streamable.
- * Em produção: repositório separado @voll/dep-agent-risk-domain
  *
  * Expõe UMA tool: risk_process_card
  *

@@ -8,11 +8,6 @@
  *   → recebe JiraCardData
  *   → roteia internamente por label para os agentes especialistas
  *   → retorna DomainResult serializado
- *
- * Em produção (repo separado @voll/dep-agent-pay-domain):
- *   O cliente configura:
- *     command: 'node'
- *     args: ['node_modules/@voll/dep-agent-pay-domain/dist/server.js']
  */
 
 import 'dotenv/config';
